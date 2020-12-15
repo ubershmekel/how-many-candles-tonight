@@ -2,6 +2,6 @@
 
 https://ubershmekel.github.io/how-many-candles-tonight/
 
-All the source is index.html
+All the source is in index.html
 
 
