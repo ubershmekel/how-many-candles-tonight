@@ -1,0 +1,92 @@
+<html>
+
+<head>
+  <title>How many candles tonight?</title>
+  <link rel="stylesheet" href="holiday.css" />
+  <!-- <link rel="stylesheet" href="https://cdn.rawgit.com/kimeiga/bahunya/css/bahunya-0.1.3.css" /> -->
+  <style>
+    td {
+      line-height: 1em;
+    }
+
+    ul {
+      list-style-type: none;
+    }
+  </style>
+
+</head>
+
+<body>
+  <script src="hebcal.noloc.min.js"></script>
+  <script src="vue@2.6.12"></script>
+
+  <h1>
+    How many candles tonight?
+  </h1>
+
+  <p>
+    Which night of hanukkah is it?
+  </p>
+  <p style="direction: rtl;">
+    כמה נרות מדליקים הערב/היום?
+  </p>
+
+  <div id="app">
+    <table>
+      <tr v-for="nightObj of nightDates">
+        <td>{{ nightObj.dateString }}</td>
+        <td>Candle #{{ nightObj.index }}</td>
+        <td v-if="nightObj.isTonight">🔥tonight!</td>
+        <td v-else></td>
+      </tr>
+    </table>
+  </div>
+
+  <footer>
+    <ul>
+      <li><a href="https://github.com/ubershmekel/how-many-candles-tonight">Source on GitHub</a></li>
+      <li><a href="https://en.wikipedia.org/wiki/Hanukkah">Hanukkah info on Wikipedia</a></li>
+      <li>Built with <a href="https://vuejs.org/">Vue.js</a> and <a href="https://github.com/hebcal/hebcal">hebcal</a>
+      </li>
+    </ul>
+  </footer>
+
+
+
+  <script>
+    function dateEquals(dtA, dtB) {
+      return dtA.setHours(0, 0, 0, 0) == dtB.setHours(0, 0, 0, 0);
+    }
+
+    const app = new Vue({
+      el: '#app',
+      data: {
+        message: 'Hello Vue!',
+      },
+      computed: {
+        nightDates: function () {
+          const nightCount = 8;
+          const firstNight = 25;
+          const month = 'Kislev';
+          const now = new Date();
+
+          const out = []
+          for (let i = 0; i < nightCount; i++) {
+            const night = firstNight + i;
+            const nightDate = new Hebcal.HDate(night + ' Kislev').gregEve();
+            out.push({
+              dateString: nightDate.toLocaleDateString(),
+              index: i + 1,
+              isTonight: dateEquals(now, nightDate),
+            });
+          }
+
+          return out;
+        }
+      }
+    })
+
+  </script>
+</body>
+
+</html>
